@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="jakarta.faces.html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+    <title>Document Repository</title>
+</head>
+<h:body>
+    <h:form>
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="searchYear" value="Publication Year:" />
+            <h:inputText id="searchYear" value="#{documentBean.searchYear}" maxlength="4">
+                <f:convertNumber integerOnly="true" />
+                <f:validateRegex pattern="\d{4}" />
+                <f:validateLongRange minimum="1000" maximum="#{documentBean.currentYear}" />
+            </h:inputText>
+            <h:message for="searchYear" />
+
+            <h:commandButton value="Search by Year" action="#{documentBean.searchDocumentsByYear}" />
+            <h:commandButton value="List All Documents" action="#{documentBean.loadAllDocuments}" />
+        </h:panelGrid>
+        <h:messages globalOnly="true" />
+    </h:form>
+</h:body>
+</html>

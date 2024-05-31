@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="jakarta.faces.html"
+        xmlns:p="http://primefaces.org/ui">
+<head>
+    <title>Document Details</title>
+</head>
+<body>
+
+    <h:commandButton value="Back to List" action="listDocuments.xhtml?faces-redirect=true" />
+    <h:commandButton value="Back to Search" action="index.xhtml?faces-redirect=true" />
+    
+    <h:panelGrid columns="2" cellpadding="5">
+        <h:outputLabel value="Title:" />
+        <h:outputText value="#{documentBean.selectedDocument.title}" />
+
+        <h:outputLabel value="Authors:" />
+        <h:outputText value="#{documentBean.selectedDocument.authors}" />
+
+        <h:outputLabel value="Publication Year:" />
+        <h:outputText value="#{documentBean.selectedDocument.publicationYear}" />
+
+        <h:outputLabel value="Abstract:" />
+        <h:outputText value="#{documentBean.selectedDocument.abstract}" />
+
+        <h:outputLabel value="Storage Location:" />
+        <h:outputText value="#{documentBean.selectedDocument.storageLocation}" />
+
+        <h:outputLabel value="Publisher:" />
+        <h:outputText value="#{documentBean.selectedDocument.publisher}" />
+    </h:panelGrid>
+    
+</body>
+</html>
