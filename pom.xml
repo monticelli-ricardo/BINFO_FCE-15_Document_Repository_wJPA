@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>lu.uni.javaee</groupId>
-  <artifactId>Exercise2</artifactId>
+  <artifactId>exercise2</artifactId>
   <version>1.0</version>
   <packaging>war</packaging>
   <name>Exercise2</name>
@@ -42,10 +42,39 @@
       <version>6.0.0.Alpha7</version>
       <scope>provided</scope>
     </dependency>
+    <!-- SLF4J API -->
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>3.0.0-beta2</version>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.1.0-alpha1</version>
+    </dependency>
+
+    <!-- Log4j SLF4J Binding -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>3.0.0-beta2</version>
+    </dependency>
+
+    <!-- Log4j Core -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>3.0.0-beta2</version>
+    </dependency>
+
+    <!-- Log4j API -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>3.0.0-beta2</version>
+    </dependency>
+    <!--Primefaces -->
+    <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>14.0.0</version>
+      <classifier>jakarta</classifier>
     </dependency>
   </dependencies>
 

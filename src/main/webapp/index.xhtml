@@ -1,30 +1,78 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="jakarta.faces.html"
-        xmlns:p="http://primefaces.org/ui"
-        xmlns:f="http://xmlns.jcp.org/jsf/core">
-<head>
-    <title>Document Repository</title>
-</head>
-<f:metadata>
-    <f:viewParam name="viewId" value="#{documentBean.viewId}" />
-</f:metadata>
-<h:body>
-    <h:form>
-        <h:panelGrid columns="2" cellpadding="5">
-            <h:outputLabel for="searchYear" value="Publication Year:" />
-            <h:inputText id="searchYear" value="#{documentBean.searchYear}" maxlength="4">
-                <f:convertNumber integerOnly="true" />
-                <f:validateRegex pattern="\d{4}" />
-                <f:validateLongRange minimum="1000" maximum="#{documentBean.currentYear}" />
-            </h:inputText>
-            <h:message for="searchYear" />
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-            <h:commandButton value="Search" action="#{documentBean.searchDocumentsByYear}" />
-            <h:commandButton value="List All Documents" action="#{documentBean.loadAllDocuments}" />
-        </h:panelGrid>
-        <h:messages globalOnly="true" />
+<h:head>
+    <title>Document Repository</title>
+</h:head>
+
+<h:body>
+    <h1>Document Repository</h1>
+
+    <!-- Menu Section -->
+    <h2>Menu</h2>
+    <h:form>
+        <p>Search by Year:</p>
+        <p><h:inputText id="searchYear" value="#{DocumentBean.searchYear}" required="true" label="Search Year">
+            <f:validateLongRange minimum="1900" maximum="#{DocumentBean.currentYear}" />
+        </h:inputText></p>
+        <h:message for="searchYear" />
+        <h:commandButton value="Search" action="#{DocumentBean.listDocumentsByPublicationYear}" />
+
+        <h:commandButton value="List All" action="#{DocumentBean.listDocumentByTitlesAndYears}" />
     </h:form>
+
+    <!-- Document List Section -->
+    <h2>Document List</h2>
+    <h:dataTable value="#{DocumentBean.listDocuments}" var="doc" rendered="#{not empty DocumentBean.listDocuments}">
+        <h:column>
+            <f:facet name="header">Title</f:facet>
+            #{doc.title}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Authors</f:facet>
+            #{doc.authors}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Publication Date</f:facet>
+            #{doc.publicationDate}
+        </h:column>
+        <!-- Add more columns for other document details -->
+        <h:column>
+            <f:facet name="header">Details</f:facet>
+            <p:commandButton value="View" action="#{DocumentBean.selectDocument(doc)}" />
+        </h:column>
+    </h:dataTable>
+
+    <h:dataTable value="#{DocumentBean.listAllDocuments}" var="docRow" rendered="#{not empty DocumentBean.listAllDocuments}">
+        <h:column>
+            <f:facet name="header">Title</f:facet>
+            #{docRow[0]}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Publication Date</f:facet>
+            #{docRow[1]}
+        </h:column>
+        <h:column>
+            <f:facet name="header">Action</f:facet>
+            <h:commandButton value="View Details" action="#{DocumentBean.selectDocumentByTitle(docRow[0])}" />
+        </h:column>
+    </h:dataTable>
+
+    <!-- Document Details Section -->
+    <h2>Document Details</h2>
+    <h:panelGroup rendered="#{not empty DocumentBean.selectedDocument}">
+        <h3>Selected Document</h3>
+        <p>Title: #{DocumentBean.selectedDocument.title}</p>
+        <p>Authors: #{DocumentBean.selectedDocument.authors}</p>
+        <p>Abstract: #{DocumentBean.selectedDocument.abstractText}</p>
+        <p>Publisher: #{DocumentBean.selectedDocument.publisher}</p>
+        <p>Publication Date: #{DocumentBean.selectedDocument.publicationDate}</p>
+        <p>Stores: #{DocumentBean.selectedDocument.storageLocation}</p>
+
+    </h:panelGroup>
 </h:body>
+
 </html>
