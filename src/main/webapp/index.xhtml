@@ -7,6 +7,9 @@
 <head>
     <title>Document Repository</title>
 </head>
+<f:metadata>
+    <f:viewParam name="viewId" value="#{documentBean.viewId}" />
+</f:metadata>
 <h:body>
     <h:form>
         <h:panelGrid columns="2" cellpadding="5">
@@ -18,7 +21,7 @@
             </h:inputText>
             <h:message for="searchYear" />
 
-            <h:commandButton value="Search by Year" action="#{documentBean.searchDocumentsByYear}" />
+            <h:commandButton value="Search" action="#{documentBean.searchDocumentsByYear}" />
             <h:commandButton value="List All Documents" action="#{documentBean.loadAllDocuments}" />
         </h:panelGrid>
         <h:messages globalOnly="true" />

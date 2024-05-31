@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="jakarta.faces.html"
-        xmlns:p="http://primefaces.org/ui">
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>List of Documents</title>
 </h:head>
@@ -18,6 +18,15 @@
             </p:column>
             <p:column headerText="Authors">
                 <h:outputText value="#{doc.authors}" />
+            </p:column>
+            <p:column headerText="Abstract Text">
+                <h:outputText value="#{doc.abstractText}" />
+            </p:column>
+            <p:column headerText="Storage Location">
+                <h:outputText value="#{doc.storageLocation}" />
+            </p:column>
+            <p:column headerText="Publisher">
+                <h:outputText value="#{doc.publisher}" />
             </p:column>
         </p:dataTable>
         <h:commandButton value="View Details" action="#{documentBean.selectDocument}" disabled="#{empty documentBean.selectedDocument}" />
