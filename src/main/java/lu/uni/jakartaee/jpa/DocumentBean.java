@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.Year;
 import java.util.List;
 
-@Named
+@Named("DocumentBean")
 @SessionScoped
 public class DocumentBean implements Serializable {
 
@@ -32,58 +32,87 @@ public class DocumentBean implements Serializable {
     private String viewId;
 
     // Custom Actions
-    public void searchDocumentsByYear() {
-        if (searchYear != null && searchYear >= 1000 && searchYear <= currentYear) {
+
+    // Method to find all documents of a certain publication year
+    public void listDocumentsByPublicationYear() {
+        if (searchYear != null && searchYear >= 1900 && searchYear <= currentYear) { // Check
             logger.info("Searching for documents published in the year: {}", searchYear);
-            listDocuments = documentRepository.findByPublicationYear(searchYear);
-            chooseAction("list");
-        } else {
+            
+            // Look in to the database for all documents based on certain publication year
+            listDocuments = documentRepository.selectDocumentsByPublicationYear(searchYear);
+            //chooseAction("list");
+            
+            // Clear list to not render it
+            if(listAllDocuments.isEmpty()){
+                listAllDocuments.clear();
+            }
+  
+
+        } else { // Message for bad input
             logger.warn("Search year is null");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Year", "Please enter a valid year between 1000 and current year."));
         }
 
     }
 
-    public void loadAllDocuments() {
+
+    // Method to List all document titles and publication years
+    public void listDocumentByTitlesAndYears() {
         logger.info("Loading all documents.");
-        listAllDocuments = documentRepository.listAllDocuments();
-        chooseAction("list");
+        // Look in the database for title and author of all documents
+        listAllDocuments = documentRepository.selectDocumentByTitlesAndYears();
+        //chooseAction("list");
+
+        // Clear list to not render it
+        if(listDocuments.isEmpty()){
+            listDocuments.clear();
+        }
+        
     }
 
+
+    // Method to show all details of selected document
     public void selectDocument(Document doc){
         logger.info("Selecting document with ID: {}", selectedDocumentId);
         setSelectedDocument(doc);
+
+        // Get the ID of the selected document
         selectedDocumentId = getSelectedDocument().getId();
         logger.info("Loading details.");
+        
+        // Look in to the database for the selected document details
         loadDocumentDetails();
-        chooseAction("details");
+        //chooseAction("details");
     }
 
+    // Helper method to load all the details of selected document
     public void loadDocumentDetails() {
-        if (selectedDocumentId != null) {
+        if (selectedDocumentId != null) { // Check
             logger.info("Loading details for document with ID: {}", selectedDocumentId);
-            selectedDocument = documentRepository.findById(selectedDocumentId);
-        } else {
+            
+            // Extract the data from the database
+            selectedDocument = documentRepository.selectDocumentById(selectedDocumentId);
+        } else { // Warning message
             logger.warn("Selected document ID is null.");
         }
     }
 
-    // Helper Method to decide the View
-    public String chooseAction(String status) {
-        if (status.equals("details")) { // Check for Win Status
-            logger.info("Navigating to Document Details View.");
-            return "details";
+    // // Helper Method to decide the View
+    // public String chooseAction(String status) {
+    //     if (status.equals("details")) { // Check for Win Status
+    //         logger.info("Navigating to Document Details View.");
+    //         return "details";
 
-        } else if(status.equals("list"))  { // Check for Lose Status
-            logger.info("Navigating to All Documents View.");
-            return "list";
+    //     } else if(status.equals("list"))  { // Check for Lose Status
+    //         logger.info("Navigating to All Documents View.");
+    //         return "list";
 
-        } else {       // Default return statement
-            logger.info("Navigating to Home Page View.");
-            return "search"; // or return null; or return some default value
-        }
+    //     } else {       // Default return statement
+    //         logger.info("Navigating to Home Page View.");
+    //         return "search"; // or return null; or return some default value
+    //     }
         
-    }
+    // }
 
 
     // Getters and setters
