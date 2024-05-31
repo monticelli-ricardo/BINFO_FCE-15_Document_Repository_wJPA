@@ -21,7 +21,7 @@
         <h:message for="searchYear" />
         <h:commandButton value="Search" action="#{DocumentBean.listDocumentsByPublicationYear}" />
 
-        <h:commandButton value="List All" action="#{DocumentBean.listDocumentByTitlesAndYears}" />
+        <h:commandButton value="List All" action="#{DocumentBean.listDocumentByTitlesAndYears}" immediate="true" />
     </h:form>
 
     <!-- Document List Section -->
@@ -37,7 +37,9 @@
         </h:column>
         <h:column>
             <f:facet name="header">Publication Date</f:facet>
-            #{doc.publicationDate}
+            <h:outputText value="#{docRow[1]}">
+                <f:convertDateTime pattern="yyyy-MM-dd" />
+            </h:outputText>
         </h:column>
         <!-- Add more columns for other document details -->
         <h:column>
@@ -53,26 +55,32 @@
         </h:column>
         <h:column>
             <f:facet name="header">Publication Date</f:facet>
-            #{docRow[1]}
+            <h:outputText value="#{docRow[1]}">
+                <f:convertDateTime pattern="yyyy-MM-dd" />
+            </h:outputText>
         </h:column>
         <h:column>
-            <f:facet name="header">Action</f:facet>
-            <h:commandButton value="View Details" action="#{DocumentBean.selectDocumentByTitle(docRow[0])}" />
+            <f:facet name="header">Details</f:facet>
+            <h:commandButton value="View" action="#{DocumentBean.selectDocument(docRow[0])}" />
         </h:column>
     </h:dataTable>
 
     <!-- Document Details Section -->
     <h2>Document Details</h2>
-    <h:panelGroup rendered="#{not empty DocumentBean.selectedDocument}">
-        <h3>Selected Document</h3>
-        <p>Title: #{DocumentBean.selectedDocument.title}</p>
-        <p>Authors: #{DocumentBean.selectedDocument.authors}</p>
-        <p>Abstract: #{DocumentBean.selectedDocument.abstractText}</p>
-        <p>Publisher: #{DocumentBean.selectedDocument.publisher}</p>
-        <p>Publication Date: #{DocumentBean.selectedDocument.publicationDate}</p>
-        <p>Stores: #{DocumentBean.selectedDocument.storageLocation}</p>
-
-    </h:panelGroup>
+    <h:panelGrid columns="2" rendered="#{not empty DocumentBean.selectedDocument}">
+        <h:outputLabel value="Title:" />
+        <h:outputText value="#{DocumentBean.selectedDocument.title}" />
+        <h:outputLabel value="Abstract:" />
+        <h:outputText value="#{DocumentBean.selectedDocument.abstractText}" />
+        <h:outputLabel value="Publication Date:" />
+        <h:outputText value="#{DocumentBean.selectedDocument.publicationDate}">
+            <f:convertDateTime pattern="yyyy-MM-dd" />
+        </h:outputText>
+        <h:outputLabel value="Publisher:" />
+        <h:outputText value="#{DocumentBean.selectedDocument.publisher}" />
+        <h:outputLabel value="Storage Location:" />
+        <h:outputText value="#{DocumentBean.selectedDocument.storageLocation}" />
+    </h:panelGrid>
 </h:body>
 
 </html>
