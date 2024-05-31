@@ -15,9 +15,9 @@ CREATE TABLE `authors` (
 CREATE TABLE `documents` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
-    `abstract` TEXT,
-    `publication_date` DATE,
-    `storage_location` VARCHAR(255),
+    `abstractText` TEXT,
+    `publicationDate` DATE,
+    `storageLocation` VARCHAR(255),
     `publisher` VARCHAR(255),
     PRIMARY KEY (`id`)
 );
@@ -45,7 +45,7 @@ INSERT INTO `authors` (`name`) VALUES
 ('Ernest Hemingway');
 
 -- Insert documents
-INSERT INTO `documents` (`title`, `abstract`, `publication_date`, `storage_location`, `publisher`) VALUES
+INSERT INTO `documents` (`title`, `abstractText`, `publicationDate`, `storageLocation`, `publisher`) VALUES
 ('Harry Potter and the Philosopher''s Stone', 'Fantasy novel about a young wizard named Harry Potter', '1997-06-26', 'Shelf A1', 'Bloomsbury'),
 ('1984', 'Dystopian social science fiction novel and cautionary tale about the future', '1949-06-08', 'Shelf B2', 'Secker & Warburg'),
 ('The Hobbit', 'Fantasy novel about the adventures of a hobbit named Bilbo Baggins', '1937-09-21', 'Shelf C3', 'George Allen & Unwin'),
