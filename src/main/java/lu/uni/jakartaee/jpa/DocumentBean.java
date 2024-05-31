@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.Serializable;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named("DocumentBean")
@@ -21,8 +22,8 @@ public class DocumentBean implements Serializable {
     @Inject
     private DocumentRepository documentRepository;
 
-    private List<Document> listDocuments;
-    private List<Object[]> listAllDocuments;
+    private List<Document> listDocuments = new ArrayList<>();
+    private List<Object[]> listAllDocuments = new ArrayList<>();
     private Document selectedDocument;
 
     private Integer searchYear;
@@ -40,10 +41,9 @@ public class DocumentBean implements Serializable {
             
             // Look in to the database for all documents based on certain publication year
             listDocuments = documentRepository.selectDocumentsByPublicationYear(searchYear);
-            //chooseAction("list");
             
             // Clear list to not render it
-            if(listAllDocuments.isEmpty()){
+            if(!listAllDocuments.isEmpty()){
                 listAllDocuments.clear();
             }
   
@@ -61,10 +61,9 @@ public class DocumentBean implements Serializable {
         logger.info("Loading all documents.");
         // Look in the database for title and author of all documents
         listAllDocuments = documentRepository.selectDocumentByTitlesAndYears();
-        //chooseAction("list");
 
         // Clear list to not render it
-        if(listDocuments.isEmpty()){
+        if(!listDocuments.isEmpty()){
             listDocuments.clear();
         }
         
@@ -82,7 +81,6 @@ public class DocumentBean implements Serializable {
         
         // Look in to the database for the selected document details
         loadDocumentDetails();
-        //chooseAction("details");
     }
 
     // Helper method to load all the details of selected document
@@ -97,22 +95,6 @@ public class DocumentBean implements Serializable {
         }
     }
 
-    // // Helper Method to decide the View
-    // public String chooseAction(String status) {
-    //     if (status.equals("details")) { // Check for Win Status
-    //         logger.info("Navigating to Document Details View.");
-    //         return "details";
-
-    //     } else if(status.equals("list"))  { // Check for Lose Status
-    //         logger.info("Navigating to All Documents View.");
-    //         return "list";
-
-    //     } else {       // Default return statement
-    //         logger.info("Navigating to Home Page View.");
-    //         return "search"; // or return null; or return some default value
-    //     }
-        
-    // }
 
 
     // Getters and setters
