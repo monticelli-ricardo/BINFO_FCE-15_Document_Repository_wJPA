@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,9 +24,16 @@ public class DocumentRepository implements Serializable {
 
     public List<Document> selectDocumentsByPublicationYear(int year) {
         logger.debug("Searching for documents published in the year: {}", year);
-        TypedQuery<Document> query = em.createQuery("SELECT d FROM Document d WHERE YEAR(d.publicationDate) = :year", Document.class);
-        query.setParameter("year", year);
-        return query.getResultList();
+        TypedQuery<Document> query = em.createQuery(
+            "SELECT DISTINCT d FROM Document d LEFT JOIN FETCH d.authors WHERE YEAR(d.publicationDate) = :year", 
+            Document.class
+        );
+        
+        List<Document> documents = query.setParameter("year", year).getResultList();
+        for (Document doc : documents) {
+            Hibernate.initialize(doc.getAuthors());
+        }
+        return documents;
     }
 
     public List<Object[]> selectDocumentByTitlesAndYears() {
@@ -35,7 +43,12 @@ public class DocumentRepository implements Serializable {
 
     public Document selectDocumentById(Long id) {
         logger.debug("Finding document by ID: {}", id);
-        return em.find(Document.class, id);
+        Document document = em.find(Document.class, id);
+        if (document != null) {
+            Hibernate.initialize(document.getAuthors());
+        }
+        return document;
     }
+
 }
 
