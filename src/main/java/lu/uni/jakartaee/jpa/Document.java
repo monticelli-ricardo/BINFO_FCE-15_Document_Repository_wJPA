@@ -16,10 +16,19 @@ public class Document implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String abstractText;
+
+    @Column(nullable = false)
     private Date publicationDate;
+
+    @Column(nullable = false)
     private String storageLocation;
+
+    @Column(nullable = false)
     private String publisher;
 
     @ManyToMany
