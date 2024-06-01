@@ -15,7 +15,7 @@ public class Author implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private List<Document> documents;
 
     // Getters and Setters
