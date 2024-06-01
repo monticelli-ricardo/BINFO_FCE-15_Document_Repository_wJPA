@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "documents")
@@ -31,7 +32,7 @@ public class Document implements Serializable{
     @Column(nullable = false)
     private String publisher;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "document_authors",
         joinColumns = @JoinColumn(name = "document_id"),
@@ -94,6 +95,15 @@ public class Document implements Serializable{
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public String getAuthorNames() {
+    if (authors == null || authors.isEmpty()) {
+        return "";
+    }
+    return authors.stream()
+                    .map(Author::getName)
+                    .collect(Collectors.joining(", "));
     }
 
     @Override
