@@ -44,16 +44,19 @@ public class DocumentBean implements Serializable {
             listAllDocuments.clear();
         }
 
-            
-            logger.info("Searching for documents published in the year: {}", searchYear);
-            
-            // Look in to the database for all documents based on certain publication year
-            listDocuments = documentRepository.selectDocumentsByPublicationYear(searchYear);
-              
+        logger.info("Searching for documents published in the year: {}", searchYear);
+        
+        // Look in to the database for all documents based on certain publication year
+        listDocuments = documentRepository.selectDocumentsByPublicationYear(searchYear);
+        
+        // Check if the search result is empty
+        if (listDocuments.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No documents found for the specified year.", null));
+        }
 
         } else { // Message for bad input
-            logger.warn("Search year is null");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Year", "Please enter a valid year between 1000 and current year."));
+            logger.warn("User input for `searchYear` is null.");
+            FacesContext.getCurrentInstance().addMessage("searchYear", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Year Input", "Input must be a valid year format, between 1000 and current year."));
         }
 
     }
@@ -74,6 +77,10 @@ public class DocumentBean implements Serializable {
         listAllDocuments = documentRepository.selectDocumentByTitlesAndYears();
         logger.info("Documents: {}", listAllDocuments);
 
+        // Check if the search result is empty
+        if (listAllDocuments.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No documents found for the specified year.", null));
+        }
 
         
     }
@@ -100,10 +107,14 @@ public class DocumentBean implements Serializable {
             logger.info("Document Location: {}", selectedDocument.getStorageLocation());
             logger.info("Document Authors: {}", selectedDocument.getAuthors());
 
+            // Ensure proper update targeting
+            FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":detailsForm");
+                
         } else { // Warning message
             logger.warn("Selected document ID is null.");
         }
     }
+
     // Helper method to reset the `selectedDocument` data after a new search starts
     public void resetSelectedDocument() {
         this.selectedDocument = null;
