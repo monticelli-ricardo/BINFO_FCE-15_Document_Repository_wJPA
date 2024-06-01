@@ -1,108 +1,121 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      xml:lang="en">
 
-<h:head>
-    <title>Document Repository</title>
-</h:head>
+    <ui:composition template="/templates/basic_template.xhtml">
 
-<h:body>
-    <h1>Exercise 2: Document Repository</h1>
+        <ui:define name="title">Exercise 2: Document Repository</ui:define>
+       
+        <!--Web page title -->>
+        <ui:define name="top">
+            Exercise2: Document Repository
+        </ui:define>
 
-    <!--Displays messages in an overlay-->
-    <p:growl id="growl" showDetail="true" />
+        <!-- Menu Section -->
+        <ui:define name="menu">
+            <h2>Search Menu</h2>    
+            <h:form id="searchYearForm">
+                <!-- Input Search text-->
+                <div>
+                    <p:outputLabel for="searchYear" value="Search by Year:" />
+                    <span class="ui-input-icon-left">
+                        <i class="pi pi-search"/>
+                        <p:inputText id="searchYear" placeholder="Published year" value="#{DocumentBean.searchYear}" required="true">
+                            <f:validateLongRange minimum="1000" maximum="#{DocumentBean.currentYear}" />
+                        </p:inputText>
+                    </span>
+                </div>
+                <!--Action Buttons-->
+                <p:panelGrid columns="2" class="blue">
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Search" action="#{DocumentBean.listDocumentsByPublicationYear}" update="@form :listForm :detailsForm growl" styleClass="mr-2" style="width: auto"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="List All Documents" action="#{DocumentBean.listDocumentByTitlesAndYears}" immediate="true" update="@form :listForm :detailsForm growl" styleClass="mr-2 ui-button-warning" style="width: auto"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </h:form>
+        </ui:define>
+        
 
-    <!-- Menu Section -->
-    <h2>Search Menu</h2>    
-    <h:form id="searchYearForm">
-        <p:panelGrid columns="2">
-            <!-- Input Search text-->
-            <p:outputLabel for="searchYear" value="Search by Year:" />
-            <p:inputText id="searchYear" value="#{DocumentBean.searchYear}" required="true">
-                <f:validateLongRange minimum="1000" maximum="#{DocumentBean.currentYear}" />
-            </p:inputText>
 
-            <!--Action Buttons-->
-            <p:commandButton value="Search" action="#{DocumentBean.listDocumentsByPublicationYear}" update="@form :listForm growl" styleClass="mr-2"/>
-            <p:commandButton value="List All Documents" action="#{DocumentBean.listDocumentByTitlesAndYears}" immediate="true" update="@form :listForm growl" styleClass="mr-2 ui-button-warning"/>
-        </p:panelGrid>
-    </h:form>
+        <ui:define name="content">
+            <!--Displays messages in an overlay-->
+            <p:growl id="growl" showDetail="true" />
 
-    <!-- Document List Section -->
-    <h2>Document List</h2>
+            <!-- Document List Section -->
+            <h2>Document List</h2>
 
-    <h:form id="listForm" resetValues="true">
-        <p:dataTable value="#{DocumentBean.listDocuments}" var="doc" rendered="#{not empty DocumentBean.listDocuments}">
-            <p:column>
-                <f:facet name="header">Title</f:facet>
-                <h:outputText value="#{doc.title}"/>
-            </p:column> 
-            <p:column>
-                <f:facet name="header">Authors</f:facet>
-                <h:outputText value="#{doc.authorNames}"/>
-            </p:column>
-            <p:column>
-                <f:facet name="header">Publication Date</f:facet>
-                <h:outputText value="#{doc.publicationDate}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" />
-                </h:outputText>
-            </p:column>
-            <p:column>
-                <f:facet name="header">Details</f:facet>
-                <h:inputHidden value="#{doc.id}" id="documentId_#{rowIndex}" />
-                <p:commandButton value="View" action="#{DocumentBean.loadDocumentDetails}" >
-                    <f:ajax execute="@this" render=":detailsForm growl"/>
-                    <f:setPropertyActionListener target="#{DocumentBean.selectedDocumentId}" value="#{doc.id}" />
-                </p:commandButton>
-            </p:column>
-        </p:dataTable>
+            <h:form id="listForm" resetValues="true">
+                <p:dataTable value="#{DocumentBean.listDocuments}" var="doc" rendered="#{not empty DocumentBean.listDocuments}">
+                    <p:column headerText="Title">
+                        <h:outputText value="#{doc.title}"/>
+                    </p:column> 
+                    <p:column headerText="Authors">
+                        <h:outputText value="#{doc.authorNames}"/>
+                    </p:column>
+                    <p:column headerText="Publication Date">
+                        <h:outputText value="#{doc.publicationDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Details">
+                        <h:inputHidden value="#{doc.id}" id="documentId_#{rowIndex}" />
+                        <p:commandButton value="View" action="#{DocumentBean.loadDocumentDetails}" update=":detailsForm :growl" oncomplete="scrollToDetails()">
+                            <f:setPropertyActionListener target="#{DocumentBean.selectedDocumentId}" value="#{doc.id}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
 
-   
-        <p:dataTable value="#{DocumentBean.listAllDocuments}" var="docRow" rowIndexVar="rowIndex" rendered="#{not empty DocumentBean.listAllDocuments}">
-            <p:column>
-                <f:facet name="header">Title</f:facet>
-                <h:outputText value="#{docRow[0]}"/>
-            </p:column>
-            <p:column>
-                <f:facet name="header">Publication Date</f:facet>
-                <h:outputText value="#{docRow[1]}">
-                    <f:convertDateTime pattern="yyyy-MM-dd" />
-                </h:outputText>
-            </p:column>
-            <p:column>
-                <f:facet name="header">Details</f:facet>
-                <h:inputHidden value="#{docRow[2]}" id="documentId_#{rowIndex}" />
-                <p:commandButton value="View" action="#{DocumentBean.loadDocumentDetails}" >
-                    <f:ajax execute="@this" render=":detailsForm growl" />
-                    <f:setPropertyActionListener target="#{DocumentBean.selectedDocumentId}" value="#{docRow[2]}" />
-                </p:commandButton>
-            </p:column>
-        </p:dataTable>
-    </h:form>
+        
+                <p:dataTable value="#{DocumentBean.listAllDocuments}" var="docRow" rowIndexVar="rowIndex" rendered="#{not empty DocumentBean.listAllDocuments}">
+                    <p:column headerText="Title">
+                        <h:outputText value="#{docRow[0]}"/>
+                    </p:column>
+                    <p:column headerText="Publication Date">
+                        <h:outputText value="#{docRow[1]}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Details">
+                        <h:inputHidden value="#{docRow[2]}" id="documentId_#{rowIndex}" />
+                        <p:commandButton value="View" action="#{DocumentBean.loadDocumentDetails}" update=":detailsForm :growl" oncomplete="scrollToDetails()">
+                            <f:setPropertyActionListener target="#{DocumentBean.selectedDocumentId}" value="#{docRow[2]}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
 
-    <!-- Document Details Section -->
-    <h2>Document Details</h2>
-    <h:form id="detailsForm" resetValues="true">
-        <p:panelGrid columns="2" rendered="#{not empty DocumentBean.selectedDocument}">
-            <p:outputLabel value="Title:" style="font-weight: bold;" />
-            <h:outputText value="#{DocumentBean.selectedDocument.title}" />
-            <p:outputLabel value="Abstract:" style="font-weight: bold;"/>
-            <h:outputText value="#{DocumentBean.selectedDocument.abstractText}" />
-            <p:outputLabel value="Publication Date:" style="font-weight: bold;"/>
-            <h:outputText value="#{DocumentBean.selectedDocument.publicationDate}">
-                <f:convertDateTime pattern="yyyy-MM-dd" />
-            </h:outputText>
-            <p:outputLabel value="Publisher:" style="font-weight: bold;"/>
-            <h:outputText value="#{DocumentBean.selectedDocument.publisher}" />
-            <p:outputLabel value="Storage Location:" style="font-weight: bold;" />
-            <h:outputText value="#{DocumentBean.selectedDocument.storageLocation}" />
-            <p:outputLabel value="Authors:" style="font-weight: bold;" />
-            <h:outputText value="#{DocumentBean.selectedDocument.authorNames}" />
-        </p:panelGrid>
-    </h:form>
+        <!-- Document Details Section -->
+        <ui:define name="details">
+            <h2>Document Details</h2>
+            <h:form id="detailsForm" resetValues="true">
+                <p:panelGrid columns="2" rendered="#{not empty DocumentBean.selectedDocument}">
+                    <p:outputLabel value="Title:" style="font-weight: bold;" />
+                    <h:outputText value="#{DocumentBean.selectedDocument.title}" />
+                    <p:outputLabel value="Abstract:" style="font-weight: bold;"/>
+                    <h:outputText value="#{DocumentBean.selectedDocument.abstractText}" />
+                    <p:outputLabel value="Publication Date:" style="font-weight: bold;"/>
+                    <h:outputText value="#{DocumentBean.selectedDocument.publicationDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                    </h:outputText>
+                    <p:outputLabel value="Publisher:" style="font-weight: bold;"/>
+                    <h:outputText value="#{DocumentBean.selectedDocument.publisher}" />
+                    <p:outputLabel value="Storage Location:" style="font-weight: bold;" />
+                    <h:outputText value="#{DocumentBean.selectedDocument.storageLocation}" />
+                    <p:outputLabel value="Authors:" style="font-weight: bold;" />
+                    <h:outputText value="#{DocumentBean.selectedDocument.authorNames}" />
+                </p:panelGrid>
+            </h:form>
+        </ui:define>
 
-</h:body>
 
+    </ui:composition>
 </html>
