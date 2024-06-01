@@ -1,0 +1,90 @@
+body {
+  background-color: #ffffff;
+  font-size: 12px;
+  font-family: Verdana, "Verdana CE", Arial, "Arial CE", "Lucida Grande CE",
+    lucida, "Helvetica CE", sans-serif;
+  color: #000000;
+  margin: 10px;
+}
+
+a:link,
+a:visited {
+  color: #045491;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:link:hover,
+a:visited:hover {
+  color: #045491;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#top {
+  position: relative;
+  padding: 5px;
+  margin: 0px 0px 10px 0px;
+}
+
+.menu {
+  position: fixed;
+  width: 50%;
+  padding: 20px;
+  z-index: 1000;
+  float: right;
+  background-color: lightblue;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.center_content {
+  position: relative;
+  margin-top: 150px;
+  padding: 20px;
+}
+
+.details_section {
+  margin-top: 20px;
+}
+
+.green {
+  background-color: lightgreen;
+  text-align: center;
+  color: #000000;
+}
+
+.blue {
+  background-color: lightblue;
+  text-align: center;
+  color: #000000;
+}
+
+.purple {
+  background-color: lightpink;
+  text-align: center;
+  color: #000000;
+}
+
+.orange {
+  background-color: orange;
+  text-align: center;
+  color: #000000;
+}
+
+.red{
+  background-color: lightcoral;
+  text-align: center;
+  color: #000000;
+}
+
+.disabled {
+  background-color: #eeeeee;
+  color: #999999;
+}
+
+.result-marker {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
