@@ -36,17 +36,20 @@ public class DocumentBean implements Serializable {
 
     // Method to find all documents of a certain publication year
     public void listDocumentsByPublicationYear() {
-        if (searchYear != null && searchYear >= 1900 && searchYear <= currentYear) { // Check
+        if (searchYear != null && searchYear >= 1000 && searchYear <= currentYear) { // Check
+        // Clear out before performing a new search.
+        resetSelectedDocument();
+        // Clear the other list to not render it
+        if(!listAllDocuments.isEmpty()){
+            listAllDocuments.clear();
+        }
+
+            
             logger.info("Searching for documents published in the year: {}", searchYear);
             
             // Look in to the database for all documents based on certain publication year
             listDocuments = documentRepository.selectDocumentsByPublicationYear(searchYear);
-            
-            // Clear list to not render it
-            if(!listAllDocuments.isEmpty()){
-                listAllDocuments.clear();
-            }
-  
+              
 
         } else { // Message for bad input
             logger.warn("Search year is null");
@@ -58,44 +61,53 @@ public class DocumentBean implements Serializable {
 
     // Method to List all document titles and publication years
     public void listDocumentByTitlesAndYears() {
-        logger.info("Loading all documents.");
-        // Look in the database for title and author of all documents
-        listAllDocuments = documentRepository.selectDocumentByTitlesAndYears();
-
-        // Clear list to not render it
+        // Clear out before performing a new search.
+        resetSelectedDocument();
+        // Clear the other list to not render it
         if(!listDocuments.isEmpty()){
             listDocuments.clear();
         }
+
+        logger.info("Loading all documents.");
+
+        // Look in the database for title and author of all documents
+        listAllDocuments = documentRepository.selectDocumentByTitlesAndYears();
+        logger.info("Documents: {}", listAllDocuments);
+
+
         
     }
 
 
     // Method to show all details of selected document
-    public void selectDocument(Document doc){
+    public void selectDocument(){
         logger.info("Selecting document with ID: {}", selectedDocumentId);
-        setSelectedDocument(doc);
-
-        // Get the ID of the selected document
-        selectedDocumentId = getSelectedDocument().getId();
-        logger.info("Loading details.");
         
-        // Look in to the database for the selected document details
-        loadDocumentDetails();
+        // Get the ID of the selected document
+        selectedDocument = documentRepository.selectDocumentById(selectedDocumentId);
+        logger.info("Loading details of Document: {}", selectedDocument);
     }
 
     // Helper method to load all the details of selected document
     public void loadDocumentDetails() {
         if (selectedDocumentId != null) { // Check
-            logger.info("Loading details for document with ID: {}", selectedDocumentId);
-            
             // Extract the data from the database
-            selectedDocument = documentRepository.selectDocumentById(selectedDocumentId);
+            selectDocument();
+            logger.info("Document Title: {}", selectedDocument.getTitle());
+            logger.info("Document Abstract text: {}", selectedDocument.getAbstractText());
+            logger.info("Document Publisher: {}", selectedDocument.getPublisher());
+            logger.info("Document Publish Date: {}", selectedDocument.getPublicationDate());
+            logger.info("Document Location: {}", selectedDocument.getStorageLocation());
+            logger.info("Document Authors: {}", selectedDocument.getAuthors());
+
         } else { // Warning message
             logger.warn("Selected document ID is null.");
         }
     }
-
-
+    // Helper method to reset the `selectedDocument` data after a new search starts
+    public void resetSelectedDocument() {
+        this.selectedDocument = null;
+    }
 
     // Getters and setters
 
