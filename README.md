@@ -46,17 +46,17 @@ This application is a document repository system developed using Java and JPA, r
    
    Option A: 
    
-      Load the `DB.dump` into the DB instance. Assume that a `mariadb` CLI program is available on the host, then just run:
+      Load the `exercise2.dump` into the DB instance. Assume that a `mariadb` CLI program is available on the host, then just run:
 
       ```
-      mariadb -h localhost -u javaee -p javaee < DB.dump
+      mariadb -h localhost -u javaee -p javaee < exercise2.dump
       ```
 
       with password "eeavaj". You can detect this problem if a search with id 1 outputs "No data found", and there is a corresponding error message in the logs.
 
    Option B:
 
-      Run the following script:
+      Run the following command to execute the "script" `db_dump.sql`:
       ```
       mysql -h localhost -u javaee -p javaee --protocol tcp < db_dump.sql
       ```

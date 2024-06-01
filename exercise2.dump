@@ -1,0 +1,138 @@
+-- MariaDB dump 10.19-11.3.2-MariaDB, for osx10.19 (arm64)
+--
+-- Host: localhost    Database: javaee
+-- ------------------------------------------------------
+-- Server version	11.3.2-MariaDB-1:11.3.2+maria~ubu2204
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `authors`
+--
+
+DROP TABLE IF EXISTS `authors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `authors` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `authors`
+--
+
+LOCK TABLES `authors` WRITE;
+/*!40000 ALTER TABLE `authors` DISABLE KEYS */;
+INSERT INTO `authors` VALUES
+(1,'J.K. Rowling'),
+(2,'George Orwell'),
+(3,'J.R.R. Tolkien'),
+(4,'Agatha Christie'),
+(5,'Stephen King'),
+(6,'Mark Twain'),
+(7,'Jane Austen'),
+(8,'Charles Dickens'),
+(9,'F. Scott Fitzgerald'),
+(10,'Ernest Hemingway');
+/*!40000 ALTER TABLE `authors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document_authors`
+--
+
+DROP TABLE IF EXISTS `document_authors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `document_authors` (
+  `document_id` bigint(20) NOT NULL,
+  `author_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`document_id`,`author_id`),
+  KEY `FKhl8uncgf9ux6ejeufr74nj7td` (`author_id`),
+  CONSTRAINT `FK2gatglt6c4igu37h3ul6xwytm` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`),
+  CONSTRAINT `FKhl8uncgf9ux6ejeufr74nj7td` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
+  CONSTRAINT `document_authors_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`),
+  CONSTRAINT `document_authors_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document_authors`
+--
+
+LOCK TABLES `document_authors` WRITE;
+/*!40000 ALTER TABLE `document_authors` DISABLE KEYS */;
+INSERT INTO `document_authors` VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5),
+(6,6),
+(7,7),
+(8,8),
+(9,9),
+(10,10);
+/*!40000 ALTER TABLE `document_authors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `documents`
+--
+
+DROP TABLE IF EXISTS `documents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `documents` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `abstractText` text DEFAULT NULL,
+  `publicationDate` date DEFAULT NULL,
+  `storageLocation` varchar(255) DEFAULT NULL,
+  `publisher` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `documents`
+--
+
+LOCK TABLES `documents` WRITE;
+/*!40000 ALTER TABLE `documents` DISABLE KEYS */;
+INSERT INTO `documents` VALUES
+(1,'Harry Potter and the Philosopher\'s Stone','Fantasy novel about a young wizard named Harry Potter','1997-06-26','Shelf A1','Bloomsbury'),
+(2,'1984','Dystopian social science fiction novel and cautionary tale about the future','1949-06-08','Shelf B2','Secker & Warburg'),
+(3,'The Hobbit','Fantasy novel about the adventures of a hobbit named Bilbo Baggins','1937-09-21','Shelf C3','George Allen & Unwin'),
+(4,'Murder on the Orient Express','Detective novel featuring Hercule Poirot','1934-01-01','Shelf D4','Collins Crime Club'),
+(5,'The Shining','Horror novel about a haunted hotel and its caretaker\'s descent into madness','1977-01-28','Shelf E5','Doubleday'),
+(6,'The Adventures of Tom Sawyer','Novel about a young boy growing up along the Mississippi River','1876-06-01','Shelf F6','American Publishing Company'),
+(7,'Pride and Prejudice','Romantic novel about the manners and matrimonial machinations among the British gentry of the early 19th century','1813-01-28','Shelf G7','T. Egerton, Whitehall'),
+(8,'A Tale of Two Cities','Historical novel set in London and Paris before and during the French Revolution','1859-04-30','Shelf H8','Chapman & Hall'),
+(9,'The Great Gatsby','Novel about the American dream and the roaring twenties','1925-04-10','Shelf I9','Charles Scribner\'s Sons'),
+(10,'The Old Man and the Sea','Novel about an aging fisherman\'s struggle to catch a giant marlin','1952-09-01','Shelf J10','Charles Scribner\'s Sons');
+/*!40000 ALTER TABLE `documents` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-06-02  0:16:23
