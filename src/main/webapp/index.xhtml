@@ -30,16 +30,8 @@
                     </span>
                 </div>
                 <!--Action Buttons-->
-                <p:panelGrid columns="2" class="blue">
-                    <p:row>
-                        <p:column>
-                            <p:commandButton value="Search" action="#{DocumentBean.listDocumentsByPublicationYear}" update="@form :listForm :detailsForm growl" styleClass="mr-2" style="width: auto"/>
-                        </p:column>
-                        <p:column>
-                            <p:commandButton value="List All Documents" action="#{DocumentBean.listDocumentByTitlesAndYears}" immediate="true" update="@form :listForm :detailsForm growl" styleClass="mr-2 ui-button-warning" style="width: auto"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+                <p:commandButton value="Search by Year" action="#{DocumentBean.listDocumentsByPublicationYear}" update="@form :listForm :detailsForm growl" styleClass="mr-2"/>
+                <p:commandButton value="List All Documents" action="#{DocumentBean.listDocumentByTitlesAndYears}" immediate="true" update="@form :listForm :detailsForm growl" styleClass="mr-2 ui-button-warning"/>
             </h:form>
         </ui:define>
         
