@@ -22,6 +22,7 @@ public class DocumentRepository implements Serializable {
 
     @Transient private static final Logger logger = LogManager.getLogger ( Document.class );
 
+    @Transactional
     public List<Document> selectDocumentsByPublicationYear(int year) {
         logger.debug("Searching for documents published in the year: {}", year);
         TypedQuery<Document> query = em.createQuery(
@@ -36,11 +37,13 @@ public class DocumentRepository implements Serializable {
         return documents;
     }
 
+    @Transactional
     public List<Object[]> selectDocumentByTitlesAndYears() {
         logger.debug("Listing all documents.");
-        return em.createQuery("SELECT d.title, d.publicationDate FROM Document d", Object[].class).getResultList();
+        return em.createQuery("SELECT d.title, d.publicationDate, d.id FROM Document d", Object[].class).getResultList();
     }
 
+    @Transactional
     public Document selectDocumentById(Long id) {
         logger.debug("Finding document by ID: {}", id);
         Document document = em.find(Document.class, id);
