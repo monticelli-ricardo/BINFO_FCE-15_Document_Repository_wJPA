@@ -5,7 +5,7 @@ This application is a document repository system developed using Java and JPA, r
 
 ## Application functions:
 - List all documents available
-- Search documents by the publication year
+- Search documents by the publication year, with user input validation
 - List details from a selected document
 
 ## Architecture
@@ -18,7 +18,6 @@ This application is a document repository system developed using Java and JPA, r
 - **Data Access Object and Repository**
    `DocumentRepository.java` provides an abstract interface to the database, managing database operations database for `Document.java` and `Authors.java` using JPA and MySQL.
 
-
 ## Setup Requirements:
 - Docker
 - Maven
@@ -26,7 +25,7 @@ This application is a document repository system developed using Java and JPA, r
 
 ## Application Setup
 
-1. **Clone or unzip the project file:**
+1. **Clone the respository or unzip the project file:**
 
 
 2. **Build the Maven project:**
