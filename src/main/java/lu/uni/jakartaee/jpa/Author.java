@@ -15,6 +15,7 @@ public class Author implements Serializable {
     private Long id;
     private String name;
 
+    // An author can write many books.
     @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private List<Document> documents;
 

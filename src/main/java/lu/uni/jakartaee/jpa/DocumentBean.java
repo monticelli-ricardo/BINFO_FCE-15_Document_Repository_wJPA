@@ -43,7 +43,7 @@ public class DocumentBean implements Serializable {
         if(!listAllDocuments.isEmpty()){
             listAllDocuments.clear();
         }
-
+        // For loggin purposes
         logger.info("Searching for documents published in the year: {}", searchYear);
         
         // Look in to the database for all documents based on certain publication year
@@ -70,7 +70,7 @@ public class DocumentBean implements Serializable {
         if(!listDocuments.isEmpty()){
             listDocuments.clear();
         }
-
+        // For loggin purposes
         logger.info("Loading all documents.");
 
         // Look in the database for title and author of all documents
@@ -88,6 +88,7 @@ public class DocumentBean implements Serializable {
 
     // Method to show all details of selected document
     public void selectDocument(){
+        // For loggin purposes
         logger.info("Selecting document with ID: {}", selectedDocumentId);
         
         // Get the ID of the selected document

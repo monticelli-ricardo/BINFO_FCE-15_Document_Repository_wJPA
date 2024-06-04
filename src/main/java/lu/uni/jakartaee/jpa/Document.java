@@ -32,6 +32,7 @@ public class Document implements Serializable{
     @Column(nullable = false)
     private String publisher;
 
+    // A book can have many authors.
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "document_authors",
