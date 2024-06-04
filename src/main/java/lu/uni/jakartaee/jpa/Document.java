@@ -32,7 +32,7 @@ public class Document implements Serializable{
     @Column(nullable = false)
     private String publisher;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "document_authors",
         joinColumns = @JoinColumn(name = "document_id"),

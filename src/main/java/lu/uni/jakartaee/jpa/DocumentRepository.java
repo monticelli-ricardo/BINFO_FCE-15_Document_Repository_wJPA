@@ -31,9 +31,6 @@ public class DocumentRepository implements Serializable {
         );
         
         List<Document> documents = query.setParameter("year", year).getResultList();
-        for (Document doc : documents) {
-            Hibernate.initialize(doc.getAuthors());
-        }
         return documents;
     }
 
