@@ -49,7 +49,7 @@ This application is a document repository system developed using Java and JPA, r
       Load the `exercise2.dump` into the DB instance. Assume that a `mariadb` CLI program is available on the host, then just run:
 
       ```
-      mariadb -h localhost -u javaee -p javaee < exercise2.dump
+      mysql -h localhost -u javaee -p javaee --protocol tcp < exercise2.dump
       ```
 
       with password "eeavaj". You can detect this problem if a search with id 1 outputs "No data found", and there is a corresponding error message in the logs.
@@ -61,5 +61,5 @@ This application is a document repository system developed using Java and JPA, r
       ```
       mysql -h localhost -u javaee -p javaee --protocol tcp < db_dump.sql
       ```
-      
+
       with password "eeavaj". You can detect this problem if a search with id 1 outputs "No data found", and there is a corresponding error message in the logs.
